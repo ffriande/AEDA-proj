@@ -1,0 +1,9 @@
+lisboa;porto;530.12;17/12/2017/23/2
+paris;madrid;430.4;7/12/2017/23/11
+frankfurt;porto;330.12;1/12/2017/13/23
+amsterdao;porto;230.5;17/12/2017/8/25
+lisboa;barcelona;130;17/12/2017/13/23
+porto;paris;530;17/2/2017/23/23
+faro;porto;230;17/12/2017/8/25
+hong-kong;luxemburgo;230;17/12/2017/8/20
+frankfurt;porto;330;1/12/2017/13/23
