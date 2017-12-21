@@ -34,8 +34,10 @@ public:
 		date.minutes=this->minutes-d.minutes;
 		return date;
 	}
+
 	
 };
+
 
 class InvalidYear{
 public:

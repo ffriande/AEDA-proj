@@ -239,9 +239,14 @@ Date Plane::getnextCheckup() const{
 unsigned int Plane::getcheckUpRoutine() const{
 	return this->checkUpRoutine;
 }
-void setnextCheckup(Date d) {
+void Plane::setnextCheckup(Date d) {
 	this->nextCheckUp=d;
 }
 void Plane::setcheckUpRoutine(unsigned int c){
 	this->checkUpRoutine=c;
 }
+
+void Plane::setlastCheckup(Date d) {
+	this->lastCheckUp=d;
+}
+

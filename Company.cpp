@@ -11,9 +11,8 @@
 #include <ctime>
 
 
-Company::Company()
-{
-	this->nome = nome;
+Company::Company(){
+
 }
 
 Company::~Company()
@@ -26,22 +25,22 @@ void Company::setName(string name){
 	this->nome=name;
 }
 
-vector<Passenger*> Company::getPassengers()
+vector<Passenger*> Company::getPassengers() const
 {
 	return passengers;
 }
 
-vector<Voo*> Company::getVoos()
+vector<Voo*> Company::getVoos() const
 {
 	return voos;
 }
 
-vector<Reservation> Company::getReservations()
+vector<Reservation> Company::getReservations() const
 {
 	return reservations;
 }
 
-vector<Plane*> Company::getPlanes()
+BST<Plane*> Company::getPlanes() const
 {
 	return planes;
 
@@ -403,7 +402,8 @@ void Company::loadReservationsALU()
 		string value;
 		string orig, dest, dat1;
 		args->clear();
-		int pass,plane;
+		int pass;
+		Plane* plane;
 		vector<unsigned int> departureDate;
 		stringstream s;
 
@@ -429,7 +429,7 @@ void Company::loadReservationsALU()
 		orig = args[4];
 		dest = args[5];
 
-		Voo *x=new VooAlugado(planes[plane],d,preco,orig,dest);
+		Voo *x=new VooAlugado(plane,d,preco,orig,dest);
 		Reservation r(preco,x->getId_voo(),orig,dest,passengers[pass]);
 		x->ocupar_vooInteiro();
 		addVoo(x);
@@ -638,7 +638,7 @@ void Company::doReservation()
 void Company::reservationPlane() {
 	string name;
 	unsigned int id;
-	int idplane;
+	Plane* idplane;
 	string depart, destination;
 	string idPass;
 	string date;
@@ -671,11 +671,15 @@ void Company::reservationPlane() {
 	cin >> depart;
 
 	cout<< "***AVAILABLE PLANES***\n";
-	for (size_t p=0;p<planes.size();p++){
-		if(planes[p]->getAlocated()==false && planes[p]->getLocation()==depart){
-			cout<<"\nID\tModel of the Plane\tCapacity\tLocation"<<endl;
-			cout<<planes[p]->getID()<<"\t"<<planes[p]->getModel()<<"\t\t"<<planes[p]->getCapacity()<<"\t\t"<<planes[p]->getLocation()<<endl;
-			}
+
+	BSTItrIn<Plane*> it(planes);
+		     while (!it.isAtEnd())
+		     {
+				if (it.retrieve()->getAlocated()==false && it.retrieve()->getLocation()==depart){
+				cout<<"\nID\tModel of the Plane\tCapacity\tLocation"<<endl;
+				cout<<it.retrieve()->getID()<<"\t"<<it.retrieve()->getModel()<<"\t\t"<<it.retrieve()->getCapacity()<<"\t\t"<<it.retrieve()->getLocation()<<endl;}
+		     it.advance();
+
 	}
 	cin.ignore();
 	cout<< "\n\nChoose plane by id\n";
@@ -715,11 +719,11 @@ void Company::reservationPlane() {
 	departureDate=decomposeStringData(date);
 	srand (time(NULL));
 	preco1=rand()%151+100;
-	precototal=preco1*planes[idplane]->getCapacity();
+	precototal=preco1*(idplane->getCapacity());
 
 	cout<<"\nThis flight will cost you\n"
 			<<"(Unitary ticket cost * number of seats = Total price)\n"
-			<<preco1<<" * "<<planes[idplane]->getCapacity()<<" =  "<<precototal;
+			<<preco1<<" * "<<idplane->getCapacity()<<" =  "<<precototal;
 
 	cout<<"\n\nCare to proceed?(y/n)\n";
 
@@ -729,7 +733,7 @@ void Company::reservationPlane() {
 		Date d(departureDate[0], departureDate[1], departureDate[2],
 				departureDate[3], departureDate[4]);
 
-		Voo *v = new VooAlugado(planes[idplane], d, precototal, depart,
+		Voo *v = new VooAlugado(idplane, d, precototal, depart,
 				destination);
 		v->ocupar_vooInteiro();
 		addVoo(v);
@@ -808,15 +812,17 @@ void Company::loadPlanes()
 	ifstream inficheiro("planes.txt");
 
 	string line;
-	string args[3];
+	string args[5];
 	
 	while (getline(inficheiro, line))
 	{
 		string plane,location;
-		unsigned int capacity;
+		unsigned int capacity, nr_days;
 		stringstream linestream(line);
 		string value;
 		args->clear();
+		vector<unsigned int> date;
+		string dat1;
 
 		int i = 0;
 
@@ -830,8 +836,17 @@ void Company::loadPlanes()
 		plane = args[0];
 		capacity = atoi(args[1].c_str());
 		location=args[2];
-		
-		Plane *a= new Plane(capacity,plane,location);
+		dat1=args[3];
+		nr_days = atoi(args[4].c_str());
+
+		date=decomposeStringData(dat1);
+
+		Date d(date[0],date[1],date[2]);
+
+
+
+
+		Plane *a= new Plane(capacity,plane,location,d,nr_days);
 		addPlane(a);
 	}
 
@@ -841,24 +856,25 @@ void Company::loadPlanes()
 
 void Company::addPlane(Plane *plane)
 {	
-		planes.push_back(plane);
+		planes.insert(plane);
 }
 
 void Company::seeAllPlanes()
-{
-
-	for (size_t i=0; i<planes.size(); i++)
-	{
-		cout<<"\nID\tModel of the Plane\tCapacity\tLocation"<<endl;
-		cout<<planes[i]->getID()<<"\t"<<planes[i]->getModel()<<"\t\t"<<planes[i]->getCapacity()<<"\t\t"<<planes[i]->getLocation()<<endl;
-
+ {
+	BSTItrIn<Plane*> it(planes);
+		     while (!it.isAtEnd())
+		     {
+		    	 cout << "\nID\tModel of the Plane\tCapacity\tLocation" << endl;
+		    	 		cout << it.retrieve()->getID() << "\t" << it.retrieve()->getModel() << "\t\t"
+		    	 				<< it.retrieve()->getCapacity() << "\t\t"
+		    	 				<< it.retrieve()->getLocation() << endl;
+		     it.advance();
+		     }
 	}
-
-}
 
 void Company::createPlane(){
 	string model, location;
-	unsigned int capacity;
+	unsigned int capacity,n;
 	cout<<"\nType the airplane model you wish to add:\n";
 	cin>> model;
 	cin.ignore();
@@ -867,13 +883,58 @@ void Company::createPlane(){
 	cin.ignore();
 	cout<<"\nHow many seats are there in this plane?\n";
 	cin>>capacity;
-	Plane *a= new Plane(capacity,model,location);
+	cout<<"\nHow many days until next manteinance?\n";
+	cin>>n;
+	Plane *a= new Plane(capacity,model,location,getcurrDate(),n);
 	addPlane(a);
 
 }
 
 
-void Company::planeCheckup();
+void Company::doCheckUp(Plane* plane) {
+	plane->setlastCheckup(getcurrDate());
+	plane->calculateNextCheckup();
+
+}
+
+void Company::set_newCheckUpTime(Plane* plane, Date d) {
+	plane->setnextCheckup(d);
+}
+
+void Company::showPlanes_ordered() {
+	BSTItrIn<Plane*> it(planes);
+	while (!it.isAtEnd()) {
+		cout
+				<< "\nID\tModel of the Plane\tCapacity\tLocation\tPlane manteinance date(dd/mm/yyyy)"
+				<< endl;
+		cout << it.retrieve()->getID() << "\t" << it.retrieve()->getModel()
+				<< "\t\t" << it.retrieve()->getCapacity() << "\t\t"
+				<< it.retrieve()->getLocation() << "\t\t"
+				<< it.retrieve()->getnextCheckup().getDay() << "/"
+				<< it.retrieve()->getnextCheckup().getMonth() << "/"
+				<< it.retrieve()->getnextCheckup().getYear() << endl;
+	}
+
+}
+
+void Company::showPlanes_nextdays(unsigned int days) {
+	BSTItrIn<Plane*> it(planes);
+	while (!it.isAtEnd()) {
+		if (time_untilCheck(it.retrieve()->getnextCheckup(),this->getcurrDate()) <= days){
+			cout
+					<< "\nID\tModel of the Plane\tCapacity\tLocation\tPlane maintenance date(dd/mm/yyyy)\tDays until maintenance"
+					<< endl;
+		cout << it.retrieve()->getID() << "\t" << it.retrieve()->getModel()
+				<< "\t\t" << it.retrieve()->getCapacity() << "\t\t"
+				<< it.retrieve()->getLocation() << "\t\t"
+				<< it.retrieve()->getnextCheckup().getDay() << "/"
+				<< it.retrieve()->getnextCheckup().getMonth() << "/"
+				<< it.retrieve()->getnextCheckup().getYear() << "\t\t"
+				<< time_untilCheck(it.retrieve()->getnextCheckup(),
+						this->getcurrDate()) << endl;
+	}
+	}
+}
 
 /////////////////////////////////////VOO///////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
@@ -881,7 +942,8 @@ void Company::planeCheckup();
 
 void Company::createVoo() {
 	string depart, destination, date;
-	int id, idplane;
+	int id;
+	Plane* idplane;
 	float preco= 300;
 	vector<unsigned int> departureDate;
 	//(Plane* Plane,Date data_partida, float preco,string partida, string destino)
@@ -889,12 +951,16 @@ void Company::createVoo() {
 	cout << "Type the departure airport:" << endl;
 	cin >> depart;
 	cout<< "***AVAILABLE PLANES***\n";
-		for (size_t p=0;p<planes.size();p++){
-			if(planes[p]->getAlocated()==false && planes[p]->getLocation()==depart){
+
+	BSTItrIn<Plane*> it(planes);
+		     while (!it.isAtEnd())
+		     {
+				if (it.retrieve()->getAlocated()==false && it.retrieve()->getLocation()==depart){
 				cout<<"\nID\tModel of the Plane\tCapacity\tLocation"<<endl;
-				cout<<planes[p]->getID()<<"\t"<<planes[p]->getModel()<<"\t\t"<<planes[p]->getCapacity()<<"\t\t"<<planes[p]->getLocation()<<endl;
-				}
-		}
+				cout<<it.retrieve()->getID()<<"\t"<<it.retrieve()->getModel()<<"\t\t"<<it.retrieve()->getCapacity()<<"\t\t"<<it.retrieve()->getLocation()<<endl;}
+		     it.advance();
+
+	}
 		cin.ignore();
 		cout<< "\n\nChoose plane by id\n";
 		cin>>id;
@@ -911,9 +977,9 @@ void Company::createVoo() {
 		departureDate=decomposeStringData(date);
 
 		Date d(departureDate[0], departureDate[1], departureDate[2],departureDate[3], departureDate[4]);
-		Voo * x = new VooComercial(planes[idplane], d, preco, depart, destination);
+		Voo * x = new VooComercial(idplane, d, preco, depart, destination);
 		voos.push_back(x);
-		planes[idplane]->setAlocated(true);
+		idplane->setAlocated(true);
 
 }
 
@@ -928,7 +994,8 @@ void Company::loadVoos()
 
 
 	while (getline(inficheiro, line))
-	{	int plane;
+	{
+	Plane* plane;
 	//char voo_type;
 	string origin, destination, dat1;
 	double initialprice;
@@ -950,8 +1017,7 @@ void Company::loadVoos()
 
 
 		s<<args[2];
-	//	voo_type = *args[0].c_str();
-		origin=args[0];
+
 		destination= args[1];
 		s >>initialprice;
 		dat1=args[3];
@@ -963,21 +1029,26 @@ void Company::loadVoos()
 		
 
 		//falta fazer um else
-		for(size_t k=0;k<planes.size();k++){
-			if(planes[k]->getLocation()==origin && !planes[k]->getAlocated()){
-				plane=k;
-				break;
-			}
+
+
+		BSTItrIn<Plane*> it(planes);
+			     while (!it.isAtEnd())
+			     {
+					if (!it.retrieve()->getAlocated()==false && it.retrieve()->getLocation()==origin)
+						plane=it.retrieve();
+			     it.advance();
 		}
+
+
 		if(initialprice<10000){
-		Voo * x = new VooComercial(planes[plane], d, initialprice, origin, destination);
+		Voo * x = new VooComercial(plane, d, initialprice, origin, destination);
 		voos.push_back(x);
-		planes[plane]->setAlocated(true);
+		plane->setAlocated(true);
 		}
 		else {
-		Voo * y = new VooAlugado(planes[plane], d, initialprice, origin, destination);
+		Voo * y = new VooAlugado(plane, d, initialprice, origin, destination);
 		voos.push_back(y);
-		planes[plane]->setAlocated(true);
+		plane->setAlocated(true);
 		}
 
 	}
@@ -1067,11 +1138,178 @@ for (size_t i = 0; i < passengers.size(); i++) {
 return passnr;
 }
 
-int Company::searchPlaneID(unsigned int p){
-	int planenr;
-	for (size_t i = 0; i < planes.size(); i++)
-			if (p == planes[i]->getID())
-				planenr = i;
 
-	return planenr;
+Plane* plane_naoEncontrado= new Plane(0,"","",Date(0,0,0),0);
+
+Plane* Company::searchPlaneID(unsigned int p){
+
+	BSTItrIn<Plane*> it(planes);
+	     while (!it.isAtEnd())
+	     {
+			if (p == it.retrieve()->getID())
+				return it.retrieve();
+	     it.advance();
+	     }
+	return plane_naoEncontrado;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+unsigned int Company::time_untilCheck(const Date d, const Date curr) { //para aplicar d-->nextCheck - curr-->currTime
+	unsigned int month, day, year, ret = 0;
+	month = curr.getMonth();
+	day = curr.getDay();
+	year = curr.getYear();
+
+	while (day != d.getDay() && month != d.getMonth() && year != d.getYear()) {
+		if (d.getDay() > day) {
+			ret += (d.getDay() - day);
+			day += (d.getDay() - day);
+		} else if (d.getDay() < day) {
+			switch (month) {
+			case 1:
+				ret += (31 - day) + 1;
+				day = 0;
+				month++;
+				break;
+			case 2:
+				ret += (28 - day) + 1;
+				day = 0;
+				month++;
+				break;
+			case 3:
+				ret += (31 - day) + 1;
+				day = 0;
+				month++;
+				break;
+			case 4:
+				ret += (30 - day) + 1;
+				day = 0;
+				month++;
+				break;
+
+			case 5:
+				ret += (31 - day) + 1;
+				day = 0;
+				month++;
+				break;
+			case 6:
+				ret += (30 - day) + 1;
+				day = 0;
+				month++;
+				break;
+			case 7:
+				ret += (31 - day) + 1;
+				day = 0;
+				month++;
+				break;
+			case 8:
+				ret += (31 - day) + 1;
+				day = 0;
+				month++;
+				break;
+			case 9:
+				ret += (30 - day) + 1;
+				day = 0;
+				month++;
+				break;
+			case 10:
+				ret += (31 - day) + 1;
+				day = 0;
+				month++;
+				break;
+			case 11:
+				ret += (30 - day) + 1;
+				day = 0;
+				month++;
+				break;
+			case 12:
+				ret += (31 - day) + 1;
+				day = 0;
+				month++;
+				year++;
+				break;
+
+			}
+
+		}
+
+		else {
+			switch (month) {
+			case 1:
+				ret += 31;
+				month++;
+				break;
+			case 2:
+				ret += 28;
+				month++;
+				break;
+			case 3:
+				ret += 31;
+				month++;
+				break;
+			case 4:
+				ret += 30;
+				month++;
+				break;
+
+			case 5:
+				ret += 31;
+				month++;
+				break;
+			case 6:
+				ret += 30;
+				month++;
+				break;
+			case 7:
+				ret += 31;
+				month++;
+				break;
+			case 8:
+				ret += 31;
+				month++;
+				break;
+			case 9:
+				ret += 30;
+				month++;
+				break;
+			case 10:
+				ret += 31;
+				month++;
+				break;
+			case 11:
+				ret += 30;
+				month++;
+				break;
+			case 12:
+				ret += 31;
+				month++;
+				year++;
+				break;
+
+			}
+
+		}
+	}
+	return ret;
+}
+
+
+
+
+
+
+
+
+
+

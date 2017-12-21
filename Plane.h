@@ -38,6 +38,7 @@ public:
 	void setAlocated(bool aloc);
 	void setcheckUpRoutine(unsigned int c);
 	void setnextCheckup(Date d) ;
+	void setlastCheckup(Date d) ;
 
 
 	void calculateNextCheckup(); //ver qual a melhor opçao aqui, se void ou Date

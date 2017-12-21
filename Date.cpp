@@ -102,3 +102,4 @@ std::ostream & operator<<(std::ostream &out, const InvalidYear &c) {
 	cout << "Year Input " << c.year << " is invalid!\n";
 	return out;
 }
+
