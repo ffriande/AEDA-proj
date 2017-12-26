@@ -1,6 +1,8 @@
 #include<iostream>
 #include "Voo.h"
 
+
+
 int Voo::idC=0;
 int Voo::idA=0;
 
@@ -112,7 +114,11 @@ VooComercial::VooComercial(Plane* planes, Date data_partida, float preco, string
 
 void VooComercial::setId_vooC()
 {
-	this->id_voo = "COM " +to_string(getIdC());
+	string ss;
+	stringstream s;
+	s<<getIdC();
+	s>>ss;
+	this->id_voo = "COM " +ss;
 	incrementIdC();
 
 }
@@ -147,7 +153,11 @@ VooAlugado::VooAlugado(Plane* planes, Date data_partida,  float preco, string pa
 
 void VooAlugado::setId_vooA()
 {
-	this->id_voo = "ALU " + to_string(getIdA())  ;
+	string ss;
+	stringstream s;
+	s<<getIdA();
+	s>>ss;
+	this->id_voo = "ALU " + ss  ;
 	incrementIdA();
 
 }

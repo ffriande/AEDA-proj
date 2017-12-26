@@ -8,6 +8,8 @@
 #include "Passenger.h"
 #include "Date.h"
 #include "Plane.h"
+#include <sstream>
+
 
 using namespace std;
 

@@ -2,13 +2,14 @@
 #include <cstring>
 #include "Company.h"
 #include <ctime>
-
+#include "Date.h"
 
 using namespace std;
 
 Company c;
 
-
+void planes();
+void menu();
 void setname(){
 
 	cout<<"Name your company:\n";
@@ -20,7 +21,49 @@ void setname(){
 	c.setName(nome);
 	cout << string(50, '\n');
 }
-void menu();
+
+void planeCheckup(){
+	cout << "-------Plane manteinance MENU-------" << endl;
+	cout << "**The planes shown are ordered by the next checkup date**" << endl<<endl;
+	cout<<"List all planes(1)"<<endl;
+	cout<<"List planes whith checkup within the next X days(2)"<<endl;
+	cout<<"List planes whith checkup until the date(dd/mm/yyyy)(3)"<<endl;
+	cout<<"Preform plane manteinance(4)"<<endl;
+	cout<<"Reschedule plane manteinance(5)"<<endl<<endl;
+	cout<<"BACK TO PLANE MENU(6)"<<endl;
+
+	int number;
+	cin>>number;
+
+	switch(number)
+	{
+	case 1:
+		c.showPlanes_ordered();
+		planeCheckup();
+		break;
+	case 2:
+		c.showPlanes_nextdays(c.input_no_ofdays());
+		planeCheckup();
+		break;
+	case 3:
+		c.showPlanes_nextdate(c.input_date());
+		planeCheckup();
+		break;
+	case 4:
+		c.doCheckUp(c.input_planeid());
+		planeCheckup();
+		break;
+	case 5:
+		c.set_newCheckUpTime(c.input_planeid(),c.input_date());
+		planeCheckup();
+		break;
+
+	case 6:
+		planes();
+		break;
+	}
+}
+
 
 void planes()
 {
@@ -45,8 +88,8 @@ void planes()
 		planes();
 		break;
 	case 3:
-		c.planeCheckup();
-		planes();
+		planeCheckup();
+
 		break;
 	case 5:
 		menu();
@@ -63,10 +106,10 @@ void reservations()
 	cout<<"Flight reservation $$$(3)"<<endl;
 	cout<<"Add new commercial flight(4)"<<endl;
 	cout<<"MENU(5)"<<endl;
-	
+
 	int number;
 	cin>>number;
-	
+
 
 	switch(number)
 	{
@@ -108,11 +151,11 @@ void passengers()
 	cout<<"List all members(3)"<<endl;
 	cout<<"Eliminate Members(4)"<<endl;
 	cout<<"MENU(5)"<<endl;
-	
+
 
 	int number;
 	cin>>number;
-	
+
 
 	switch(number)
 	{
@@ -153,7 +196,7 @@ void menu()
 
 	int number;
 	cin>>number;
-	
+
 
 	switch(number)
 	{
@@ -176,7 +219,6 @@ void menu()
 
 }
 
-
 int main()
 
 {
@@ -188,11 +230,9 @@ int main()
 	c.loadPlanes();
 	c.loadVoos();
 	c.loadReservations();
-	c.loadReservationsALU(); 
+	//c.loadReservationsALU();
 	menu();
-	
 
-	return 0;
 
 }
 

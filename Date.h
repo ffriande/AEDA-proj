@@ -46,5 +46,7 @@ public:
 };
 
 std::ostream & operator<<(std::ostream &out, const InvalidYear &c);
+unsigned int time_untilCheck(const Date d, const Date curr);
+
 
 #endif

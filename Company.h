@@ -20,8 +20,9 @@ class Company {
 	vector<Passenger*> passengers;      ////A COMPANHIA GUARDA OS DADOS, TANTO DOS PASSAGEIROS REGISTADOS COMO OCASIONAIS
 	vector<Voo*> voos;
 	vector<Reservation> reservations;
-	BST<Plane*> planes;
+	BST<Plane> planes;
 	bool lastminuteDesconto=false;
+	//unsigned int globalID_p;
 
 	public:
 	Company();
@@ -40,12 +41,13 @@ class Company {
 	vector<Passenger*> getPassengers() const;				///vector de passengers
 	vector<Voo*> getVoos() const;
 	vector<Reservation> getReservations() const;						///vector de reservas
-	BST<Plane*> getPlanes() const;
+	BST<Plane> getPlanes() const;
 
 	int searchPassengersIDmem(string pass);
 	int searchPassengersID(string pass);
 	int searchVoostr(string vooid);
-	Plane* searchPlaneID(unsigned int planeid);
+	Plane searchPlaneID(unsigned int planeid);
+	Plane searchPlane_origin(string origin);
 
 
 	////////////////passengers////////////////
@@ -75,15 +77,20 @@ class Company {
 	//////////////////PLANES//////////////////////
 	void print_availablePlanes();
 	void loadPlanes();								///l� avioes do ficheiro
-	void addPlane(Plane* plane);							///adiciona Plane
+	void addPlane(Plane plane);							///adiciona Plane
 	void seeAllPlanes();
 	void createPlane();
-	void planeCheckup();
-	void showPlanes_nextdays(unsigned int days); //fazeeer
-	void showPlanes_ordered();
-	void doCheckUp(Plane* plane);
-	void set_newCheckUpTime(Plane* plane, Date d);
 
+	//funcoes do menu
+	void showPlanes_nextdays(unsigned int days);
+	void showPlanes_ordered();
+	void doCheckUp(Plane plane);
+	void set_newCheckUpTime(Plane plane, Date d);
+	void showPlanes_nextdate(Date d) ;
+
+	unsigned int input_no_ofdays();
+	Date input_date();
+	Plane input_planeid();
 
 	/////////////////////VooS///////////////////////
 
@@ -104,6 +111,6 @@ class Company {
 
 	bool lessthan48(Date a,Date b); //a is the time of the flight and b is the current time
 
-	unsigned int time_untilCheck(const Date d, const Date curr);
+
 };
 #endif

@@ -103,3 +103,151 @@ std::ostream & operator<<(std::ostream &out, const InvalidYear &c) {
 	return out;
 }
 
+
+unsigned int time_untilCheck(const Date d, const Date curr) { //para aplicar d-->nextCheck - curr-->currTime
+
+	unsigned int month, day, year, ret = 0;
+		month = curr.getMonth();
+		day = curr.getDay();
+		year = curr.getYear();
+
+		while (day != d.getDay() || month != d.getMonth() || year != d.getYear()) {
+			if (d.getDay() > day) {
+				ret += (d.getDay() - day);
+				day += (d.getDay() - day);}
+			else if (d.getDay() < day) {
+				switch (month) {
+				case 1:
+					ret += (31 - day) + 1;
+					day = 0;
+					month++;
+					break;
+				case 2:
+					ret += (28 - day) + 1;
+					day = 0;
+					month++;
+					break;
+				case 3:
+					ret += (31 - day) + 1;
+					day = 0;
+					month++;
+					break;
+				case 4:
+					ret += (30 - day) + 1;
+					day = 0;
+					month++;
+					break;
+
+				case 5:
+					ret += (31 - day) + 1;
+					day = 0;
+					month++;
+					break;
+				case 6:
+					ret += (30 - day) + 1;
+					day = 0;
+					month++;
+					break;
+				case 7:
+					ret += (31 - day) + 1;
+					day = 0;
+					month++;
+					break;
+				case 8:
+					ret += (31 - day) + 1;
+					day = 0;
+					month++;
+					break;
+				case 9:
+					ret += (30 - day) + 1;
+					day = 0;
+					month++;
+					break;
+				case 10:
+					ret += (31 - day) + 1;
+					day = 0;
+					month++;
+					break;
+				case 11:
+					ret += (30 - day) + 1;
+					day = 0;
+					month++;
+					break;
+				case 12:
+					ret += (31 - day) + 1;
+					day = 0;
+					month=1;
+					year++;
+					break;
+
+				}
+
+			}
+
+			else {
+				switch (month) {
+				case 1:
+					ret += 31;
+					month++;
+					break;
+				case 2:
+					ret += 28;
+					month++;
+					break;
+				case 3:
+					ret += 31;
+					month++;
+					break;
+				case 4:
+					ret += 30;
+					month++;
+					break;
+
+				case 5:
+					ret += 31;
+					month++;
+					break;
+				case 6:
+					ret += 30;
+					month++;
+					break;
+				case 7:
+					ret += 31;
+					month++;
+					break;
+				case 8:
+					ret += 31;
+					month++;
+					break;
+				case 9:
+					ret += 30;
+					month++;
+					break;
+				case 10:
+					ret += 31;
+					month++;
+					break;
+				case 11:
+					ret += 30;
+					month++;
+					break;
+				case 12:
+					ret += 31;
+					month=1;
+					year++;
+					break;
+
+				}
+
+			}
+		}
+		return ret;
+}
+
+
+
+
+
+
+
+
