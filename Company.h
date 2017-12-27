@@ -11,9 +11,12 @@
 #include "Date.h"
 #include <vector>
 
+#include <algorithm>
+#include <queue>
+#include "Operator.h"
 using namespace std;
 
-
+typedef priority_queue<Operator> HEAP_OPERATOR;
 class Company {
 	Date currDate;
 	string nome;
@@ -23,6 +26,8 @@ class Company {
 	BST<Plane> planes;
 	bool lastminuteDesconto=false;
 	//unsigned int globalID_p;
+
+    HEAP_OPERATOR operators;
 
 	public:
 	Company();
