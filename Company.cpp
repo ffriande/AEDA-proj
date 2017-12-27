@@ -14,6 +14,10 @@
 //
 //Plane *a= new Plane(0,"","",Date(0,0,0),10000);
 Company::Company():planes(Plane()){
+	Operator op = Operator("guedes",{"AirbusA310","AirbusA319"},false);
+	Operator op1 = Operator("Joao",{"AirbusA32"},true);
+	operators.push(op);
+	operators.push(op1);
 
 }
 
@@ -910,6 +914,7 @@ void Company::doCheckUp(Plane plane) {
 void Company::set_newCheckUpTime(Plane plane, Date d) {
 	planes.remove(plane);
 	plane.setnextCheckup(d);
+    
 	planes.insert(plane);
 
 }
@@ -1248,6 +1253,22 @@ BSTItrIn<Plane> it(planes);
 	     it.advance();
 }
 return plane;
+}
+void Company::list_operators() {
+	HEAP_OPERATOR temp;
+	for(unsigned i =0 ; i <= operators.size(); i++){
+		Operator el = operators.top();
+		//operators.top().print_operator();
+		cout<< el.getName()<<endl;
+		operators.pop();
+		temp.push(el);
+
+	}
+
+
+
+	operators = temp;
+
 }
 
 

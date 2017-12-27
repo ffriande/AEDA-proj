@@ -3,8 +3,9 @@
 //
 
 #include "Operator.h"
+Operator::Operator(const string nome, const vector<string> models, bool available)
+    : nome(nome), models(models), available(available) {}
 
-Operator::Operator(const vector<string> &models) : models(models) {}
 
 const vector<string> &Operator::getModels() const {
   return models;
@@ -21,7 +22,12 @@ bool Operator::isAvailable() const {
 void Operator::setAvailable(bool available) {
   Operator::available = available;
 }
+string Operator::getName() const{
+	return nome;
+}
+
+bool Operator::operator<(const Operator &rhs) const {
+  return available < rhs.available;
+}
 
 
-Operator::Operator(const string &nome, const vector<string> &models, bool available)
-    : nome(nome), models(models), available(available) {}

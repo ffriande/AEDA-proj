@@ -110,6 +110,23 @@ class Company {
 	///////////////////DATE///////////
 	Date getcurrDate();
 
+	//// OPERATORS///
+
+	//// operator menu ///
+
+    void list_operators();
+
+    void add_new_operator();
+
+  	void add_operator();
+
+  	void print_operator();
+
+
+
+
+
+
 
 
 	void updatecurrDate();

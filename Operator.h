@@ -7,22 +7,35 @@
 
 #include <string>
 #include <vector>
+#include <stdio.h>
+#include "Plane.h"
+#include <queue>
 using namespace std;
+typedef priority_queue<Plane> HEAP_PLANES;
 
 class Operator {
+
  private:
   string nome;
   vector <string> models;
   bool available;
+  HEAP_PLANES planes_to_repair_;
+  int average_repair = 2 ; //em dias
+
+
  public:
 
-  Operator(const string &nome, const vector<string> &models, bool available);
+  Operator(){};
+  Operator(const string nome, const vector<string> models, bool available);
   const vector<string> &getModels() const;
 
   void setModels(const vector<string> &models);
   void Addmodel(const string model);
   bool isAvailable() const;
   void setAvailable(bool available);
+  string getName() const;
+
+  bool operator<(const Operator &rhs) const;
 
 
 };

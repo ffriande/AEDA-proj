@@ -1,9 +1,9 @@
-Ana Lee;asssss;12/7/1994;12
-Mugabe;ditador;14/10/2005;17
+Ana Lee;asssss;12/7/1994;13
+Mugabe;ditador;14/10/2005;18
 Donald Trump;trolha;12/12/1990;15
-joaquim;futebolista;14/10/1999;20
-Marcelo Rebelo de Sousa;politico;11/15/2000;3
-xano;programador;12/14/1994;22
+joaquim;futebolista;14/10/1999;21
+Marcelo Rebelo de Sousa;politico;11/15/2000;4
+xano;programador;12/14/1994;23
 Fernando;Koala;1/2/1999;0
 Bob;Construtor;9/7/1997;0
 Mocas;dealer;8/9/1985;0
