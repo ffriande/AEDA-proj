@@ -1,4 +1,5 @@
 #include "Company.h"
+#include "../../../../usr/include/c++/7/vector"
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -914,7 +915,8 @@ void Company::doCheckUp(Plane plane) {
 void Company::set_newCheckUpTime(Plane plane, Date d) {
 	planes.remove(plane);
 	plane.setnextCheckup(d);
-    
+    //add_plane_to_operator(plane);
+
 	planes.insert(plane);
 
 }
@@ -1255,21 +1257,96 @@ BSTItrIn<Plane> it(planes);
 return plane;
 }
 void Company::list_operators() {
-	HEAP_OPERATOR temp;
-	for(unsigned i =0 ; i <= operators.size(); i++){
-		Operator el = operators.top();
+	HEAP_OPERATOR temp = operators;
+    unsigned size = temp.size();
+	for(unsigned i =0 ; i < size; i++){
+		Operator el = temp.top();
 		//operators.top().print_operator();
 		cout<< el.getName()<<endl;
-		operators.pop();
-		temp.push(el);
 
+        temp.pop();
 	}
 
+}
+string get_plane_model(){
+  string model;
+  cout << "Model of plane:" <<endl;
+  cin >> model;
+  return model;
+}
 
 
-	operators = temp;
+void Company::add_new_operator() {
+  string name,plane_model;
+  vector <string> plane_models;
+
+  int cont = 1;
+  cout << "Name of Operator"<<endl;
+  cin >> name;
+  while(cont == 1){
+    plane_model = get_plane_model();
+    //validate plane model exists
+    plane_models.push_back(plane_model);
+    cout << "Add another model ? yes(1) No(0)"<< endl;
+    cin >> cont;
+  }
+  Operator novo = Operator(name,plane_models,true);
+
+
+  operators.push(novo);
+
+
 
 }
+bool Company::checkModelMatch(string model, vector<string> models) {
+  for (unsigned i = 0; i < models.size(); ++i) {
+    if(models[i] == model){
+      return true;
+    }
+
+  }
+  return false;
+
+}
+Operator Company::findOperator(Plane p) {
+
+  string plane_model = p.getModel();
+  HEAP_OPERATOR temp = operators;
+  Operator found;
+  unsigned size = operators.size();
+
+  for (unsigned i = 0; i < size; ++i) {
+
+    Operator el = operators.top();
+    if(checkModelMatch(p.getModel(),el.getModels())){
+      found = el;
+      break;
+    }
+    //reset queue
+    temp.pop();
+  }
+  
+  return found;
+}
+void Company::add_plane_to_operator(Plane p) {
+
+  unsigned size = operators.size();
+  HEAP_OPERATOR temp;
+  Operator to_add_plane = findOperator(p);
+  Operator el;
+  for (unsigned i = 0;  i < size ; ++i) {
+    el = operators.top();
+    if(to_add_plane==el){
+      el.addPlaneToQueue(p);
+    }
+    temp.push(el);
+    operators.pop();
+  }
+
+  operators=temp ;
+}
+
+
 
 
 

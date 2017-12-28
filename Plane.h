@@ -17,7 +17,8 @@ class Plane {
 	string model;
 	string location;
 	bool alocated=false;
-	
+
+
 public:
 	static unsigned int globalID_p;
 	Plane(unsigned int capacity, string model, string location, Date lastCheck, unsigned int days_until_check);

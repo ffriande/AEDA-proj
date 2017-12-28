@@ -1,16 +1,18 @@
 //
 // Created by vordep on 27-12-2017.
 //
-
+#pragma once
 #ifndef AEDA_PROJ_MASTER_OPERATOR_H
 #define AEDA_PROJ_MASTER_OPERATOR_H
 
 #include <string>
 #include <vector>
 #include <stdio.h>
-#include "Plane.h"
 #include <queue>
+#include "Plane.h"
+
 using namespace std;
+
 typedef priority_queue<Plane> HEAP_PLANES;
 
 class Operator {
@@ -21,8 +23,6 @@ class Operator {
   bool available;
   HEAP_PLANES planes_to_repair_;
   int average_repair = 2 ; //em dias
-
-
  public:
 
   Operator(){};
@@ -34,9 +34,10 @@ class Operator {
   bool isAvailable() const;
   void setAvailable(bool available);
   string getName() const;
+  void addPlaneToQueue(Plane p );
 
   bool operator<(const Operator &rhs) const;
-
+  bool operator==(const Operator &rhs) const;
 
 };
 

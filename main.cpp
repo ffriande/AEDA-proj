@@ -57,10 +57,10 @@ void planeCheckup(){
 		c.set_newCheckUpTime(c.input_planeid(),c.input_date());
 		planeCheckup();
 		break;
-
 	case 6:
 		planes();
 		break;
+
 	}
 }
 
@@ -196,7 +196,9 @@ void operators(){
 			operators();
 			break;
 		case 2:
-			//c.add_new_operator():
+			c.add_new_operator();
+			operators();
+			break;
 		case 5:
 			menu();
 	}

@@ -14,6 +14,7 @@
 #include <algorithm>
 #include <queue>
 #include "Operator.h"
+#include "../../../../usr/include/c++/7/vector"
 using namespace std;
 
 typedef priority_queue<Operator> HEAP_OPERATOR;
@@ -122,7 +123,10 @@ class Company {
 
   	void print_operator();
 
+    Operator findOperator(Plane p);
+    bool checkModelMatch(string model, vector<string> models);
 
+    void add_plane_to_operator(Plane p );
 
 
 

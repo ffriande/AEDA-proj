@@ -29,5 +29,11 @@ string Operator::getName() const{
 bool Operator::operator<(const Operator &rhs) const {
   return available < rhs.available;
 }
+bool Operator::operator==(const Operator &rhs) const {
+  return nome == rhs.nome;
+}
+void Operator::addPlaneToQueue(Plane p) {
+  planes_to_repair_.push(p);
+}
 
 
