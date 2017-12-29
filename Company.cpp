@@ -1,5 +1,4 @@
 #include "Company.h"
-#include "../../../../usr/include/c++/7/vector"
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -16,8 +15,15 @@
 //Plane *a= new Plane(0,"","",Date(0,0,0),10000);
 Company::Company():planes(Plane()){
 	Operator op = Operator("guedes",{"AirbusA310","AirbusA319"},false);
-	Operator op1 = Operator("Joao",{"AirbusA32"},true);
+	Operator op2 = Operator("guedes2",{"AirbusA310","AirbusA319"},false);
+	Operator op1 = Operator("Joao",{"AirbusA32","Teste"},true);
+	Operator op3 = Operator("TESte",{"BUS"},true);
+
 	operators.push(op);
+	operators.push(op3);
+  	operators.push(op2);
+
+	op1.increaseWorkingDays();
 	operators.push(op1);
 
 }
@@ -1338,6 +1344,7 @@ void Company::add_plane_to_operator(Plane p) {
     el = operators.top();
     if(to_add_plane==el){
       el.addPlaneToQueue(p);
+      el.increaseWorkingDays();
     }
     temp.push(el);
     operators.pop();

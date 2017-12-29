@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="AEDA"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/vordep/Projects/AEDA-proj/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/vordep/Projects/AEDA-proj/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/vordep/Projects/AEDA-proj/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/vordep/Projects/AEDA-proj/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/vordep/Projects/AEDA-proj/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/vordep/Projects/AEDA-proj/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/vordep/Projects/AEDA-proj/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/vordep/Projects/AEDA-proj/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/vordep/Projects/AEDA-proj/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/vordep/Projects/AEDA-proj/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/vordep/Projects/AEDA-proj/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/vordep/Projects/AEDA-proj/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/vordep/Projects/AEDA-proj/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/vordep/Projects/AEDA-proj/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/vordep/Projects/AEDA-proj/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="AEDA">
+				<Option output="/home/vordep/Projects/AEDA-proj/cmake-build-debug/AEDA" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/vordep/Projects/AEDA-proj/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/6"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/6"/>
+					<Add directory="/usr/include/c++/6/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/6/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/vordep/Projects/AEDA-proj/cmake-build-debug/Makefile&quot;  VERBOSE=1 AEDA"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/vordep/Projects/AEDA-proj/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/vordep/Projects/AEDA-proj/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/vordep/Projects/AEDA-proj/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="AEDA/fast">
+				<Option output="/home/vordep/Projects/AEDA-proj/cmake-build-debug/AEDA" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/vordep/Projects/AEDA-proj/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/6"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/6"/>
+					<Add directory="/usr/include/c++/6/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/6/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/vordep/Projects/AEDA-proj/cmake-build-debug/Makefile&quot;  VERBOSE=1 AEDA/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/vordep/Projects/AEDA-proj/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/vordep/Projects/AEDA-proj/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/vordep/Projects/AEDA-proj/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/vordep/Projects/AEDA-proj/BST.h">
+			<Option target="AEDA"/>
+		</Unit>
+		<Unit filename="/home/vordep/Projects/AEDA-proj/Company.cpp">
+			<Option target="AEDA"/>
+		</Unit>
+		<Unit filename="/home/vordep/Projects/AEDA-proj/Company.h">
+			<Option target="AEDA"/>
+		</Unit>
+		<Unit filename="/home/vordep/Projects/AEDA-proj/Date.cpp">
+			<Option target="AEDA"/>
+		</Unit>
+		<Unit filename="/home/vordep/Projects/AEDA-proj/Date.h">
+			<Option target="AEDA"/>
+		</Unit>
+		<Unit filename="/home/vordep/Projects/AEDA-proj/Operator.cpp">
+			<Option target="AEDA"/>
+		</Unit>
+		<Unit filename="/home/vordep/Projects/AEDA-proj/Operator.h">
+			<Option target="AEDA"/>
+		</Unit>
+		<Unit filename="/home/vordep/Projects/AEDA-proj/Passenger.cpp">
+			<Option target="AEDA"/>
+		</Unit>
+		<Unit filename="/home/vordep/Projects/AEDA-proj/Passenger.h">
+			<Option target="AEDA"/>
+		</Unit>
+		<Unit filename="/home/vordep/Projects/AEDA-proj/Plane.cpp">
+			<Option target="AEDA"/>
+		</Unit>
+		<Unit filename="/home/vordep/Projects/AEDA-proj/Plane.h">
+			<Option target="AEDA"/>
+		</Unit>
+		<Unit filename="/home/vordep/Projects/AEDA-proj/Reservation.cpp">
+			<Option target="AEDA"/>
+		</Unit>
+		<Unit filename="/home/vordep/Projects/AEDA-proj/Reservation.h">
+			<Option target="AEDA"/>
+		</Unit>
+		<Unit filename="/home/vordep/Projects/AEDA-proj/Voo.cpp">
+			<Option target="AEDA"/>
+		</Unit>
+		<Unit filename="/home/vordep/Projects/AEDA-proj/Voo.h">
+			<Option target="AEDA"/>
+		</Unit>
+		<Unit filename="/home/vordep/Projects/AEDA-proj/casualclients.txt">
+			<Option target="AEDA"/>
+		</Unit>
+		<Unit filename="/home/vordep/Projects/AEDA-proj/cflights.txt">
+			<Option target="AEDA"/>
+		</Unit>
+		<Unit filename="/home/vordep/Projects/AEDA-proj/comreservations.txt">
+			<Option target="AEDA"/>
+		</Unit>
+		<Unit filename="/home/vordep/Projects/AEDA-proj/main.cpp">
+			<Option target="AEDA"/>
+		</Unit>
+		<Unit filename="/home/vordep/Projects/AEDA-proj/planes.txt">
+			<Option target="AEDA"/>
+		</Unit>
+		<Unit filename="/home/vordep/Projects/AEDA-proj/premiumclients.txt">
+			<Option target="AEDA"/>
+		</Unit>
+		<Unit filename="/home/vordep/Projects/AEDA-proj/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

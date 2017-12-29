@@ -23,6 +23,7 @@ class Operator {
   bool available;
   HEAP_PLANES planes_to_repair_;
   int average_repair = 2 ; //em dias
+  int working_days_=0;
  public:
 
   Operator(){};
@@ -35,7 +36,7 @@ class Operator {
   void setAvailable(bool available);
   string getName() const;
   void addPlaneToQueue(Plane p );
-
+  void increaseWorkingDays();
   bool operator<(const Operator &rhs) const;
   bool operator==(const Operator &rhs) const;
 

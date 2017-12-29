@@ -27,13 +27,25 @@ string Operator::getName() const{
 }
 
 bool Operator::operator<(const Operator &rhs) const {
-  return available < rhs.available;
+	if(available && !rhs.available){
+	  return false;
+	}
+	if(!available && rhs.available){
+		return true;
+	}
+	if(working_days_ > rhs.working_days_){
+		return true;
+	}
+	return false;
 }
 bool Operator::operator==(const Operator &rhs) const {
   return nome == rhs.nome;
 }
 void Operator::addPlaneToQueue(Plane p) {
   planes_to_repair_.push(p);
+}
+void Operator::increaseWorkingDays() {
+	working_days_=working_days_+average_repair;
 }
 
 

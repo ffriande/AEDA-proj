@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 3.9)
-project(AEDA)
+project(AEDA_proj)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(AEDA
+add_executable(AEDA_proj
+        alureservations.txt
         BST.h
         casualclients.txt
         cflights.txt

@@ -14,7 +14,6 @@
 #include <algorithm>
 #include <queue>
 #include "Operator.h"
-#include "../../../../usr/include/c++/7/vector"
 using namespace std;
 
 typedef priority_queue<Operator> HEAP_OPERATOR;
