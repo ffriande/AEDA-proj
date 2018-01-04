@@ -26,6 +26,9 @@ Company::Company():planes(Plane()){
 	op1.increaseWorkingDays();
 	operators.push(op1);
 
+	HEAP_OPERATOR temp = operators;
+
+	temp.pop();
 }
 
 
@@ -864,6 +867,8 @@ void Company::loadPlanes()
 		Plane::globalID_p++;
 		Plane *a= new Plane(capacity,plane,location,d,nr_days);
 
+		//operator
+
 		addPlane(*a);
 	}
 
@@ -1267,9 +1272,7 @@ void Company::list_operators() {
     unsigned size = temp.size();
 	for(unsigned i =0 ; i < size; i++){
 		Operator el = temp.top();
-		//operators.top().print_operator();
-		cout<< el.getName()<<endl;
-
+		el.print_operator();
         temp.pop();
 	}
 
@@ -1301,6 +1304,40 @@ void Company::add_new_operator() {
 
   operators.push(novo);
 
+}
+void Company::edit_operator(){
+	string name,plane_model;
+	vector<string> plane_models;
+	int cont = 1;
+	cout << "Name of Operator to edit "<<endl;
+	cin >>name;
+
+	Operator op = findOperator(name);
+	plane_models = op.getModels();
+
+	while(cont == 1){
+		 plane_model = get_plane_model();
+		 //validate plane model exists
+		 plane_models.push_back(plane_model);
+		 cout << "Add another model ? yes(1) No(0)"<< endl;
+		 cin >> cont;
+	}
+	op.setModels(plane_models);
+	operators.push(op);
+}
+void Company::removeOperator(){
+	string name;
+	cout << "Name Of Operator to remove"<<endl;
+	cin>>name;
+
+	Operator op = findOperator(name);
+
+	// Add their planes to other person
+	unsigned i ;
+	//vector<Plane> temp = op.getPlanes();
+	//for(i = 0 ; i < temp.size();i++){
+	//	add_plane_to_operator(temp[i]);
+	//}
 
 
 }
@@ -1314,6 +1351,21 @@ bool Company::checkModelMatch(string model, vector<string> models) {
   return false;
 
 }
+
+Operator Company::findOperator(string name){
+	HEAP_OPERATOR temp ;
+	Operator found ;
+	while(!operators.empty()){
+		if(operators.top().getName() == name){
+			found = operators.top();
+		}
+		temp.push(operators.top());
+		operators.pop();
+	}
+	operators = temp;
+	return found;
+}
+
 Operator Company::findOperator(Plane p) {
 
   string plane_model = p.getModel();
@@ -1345,6 +1397,8 @@ void Company::add_plane_to_operator(Plane p) {
     if(to_add_plane==el){
       el.addPlaneToQueue(p);
       el.increaseWorkingDays();
+      //update availabilty TODO
+
     }
     temp.push(el);
     operators.pop();

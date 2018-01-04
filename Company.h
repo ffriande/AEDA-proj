@@ -74,7 +74,6 @@ class Company {
 	void seeallReservations();
 
 	void doReservation();
-
 	double precoReserva(double precoOrig, bool socio, int mediavoos, float ocupPercent, bool menos_48h, Passenger* passID);
 	double precoReserva(double precoOrig, bool socio, float ocupPercent, bool menos_48h);
 	void lastminuteDiscount(bool t);
@@ -118,9 +117,15 @@ class Company {
 
     void add_new_operator();
 
+    void edit_operator();
+
+    void removeOperator();
   	void add_operator();
 
-  	void print_operator();
+  	Operator findOperator(string name );
+  	//todo menu editar
+  	//todo menu remover
+  	//todo load
 
     Operator findOperator(Plane p);
     bool checkModelMatch(string model, vector<string> models);

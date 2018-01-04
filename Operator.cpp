@@ -38,14 +38,52 @@ bool Operator::operator<(const Operator &rhs) const {
 	}
 	return false;
 }
+
 bool Operator::operator==(const Operator &rhs) const {
   return nome == rhs.nome;
 }
+/**
+ * Add Plane to maintenance queue
+ */
 void Operator::addPlaneToQueue(Plane p) {
   planes_to_repair_.push(p);
 }
+/**
+ * Increase working days of Maintenance tech
+ */
 void Operator::increaseWorkingDays() {
 	working_days_=working_days_+average_repair;
+}
+/*
+ * Prints the planes in queue to maintenance
+ */
+void Operator::printPlanesForMaintenance(){
+	HEAP_PLANES temp = planes_to_repair_;
+	int size = planes_to_repair_.size();
+
+	for(int i = 0 ; i < size ; i++){
+		cout << "Id: "<<temp.top().getID()<<"Model: "<<temp.top().getModel()<<endl;
+		temp.pop();
+	}
+
+}
+/**
+ * Prints the maintenance technician
+ */
+void Operator::print_operator(){
+	cout << "name : "<< nome << endl;
+	cout << "Air plane Models Proficiency :"<<endl;
+	for( unsigned  i = 0 ; i < models.size();i++){
+		cout <<"\t"<<models[i];
+	}
+	cout <<endl;
+	cout << "Occupied" << available<<endl;
+
+
+	//Planes in for maintenance maintenance
+	cout << "Planes maintenance queue"<<endl;
+	printPlanesForMaintenance();
+
 }
 
 

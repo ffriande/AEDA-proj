@@ -10,7 +10,8 @@
 #include <stdio.h>
 #include <queue>
 #include "Plane.h"
-
+#include <stdio.h>
+#include <iostream>
 using namespace std;
 
 typedef priority_queue<Plane> HEAP_PLANES;
@@ -38,7 +39,13 @@ class Operator {
   void addPlaneToQueue(Plane p );
   void increaseWorkingDays();
   bool operator<(const Operator &rhs) const;
+
   bool operator==(const Operator &rhs) const;
+  void printPlanesForMaintenance();
+  /**
+   *
+   */
+  void print_operator();
 
 };
 
