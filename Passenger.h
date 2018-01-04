@@ -33,13 +33,14 @@ public:
 	void incrementIdCartao();
 	void incrementIdOcasional();
 
+	virtual void setProfession(string s){};
 	virtual void setAnnualVoos(unsigned int annualVoos){};
 	virtual string getID() const=0;
 	virtual string getProfession()const ;
 	virtual unsigned int getAnnualVoos()const  ;
 	virtual bool isMember()const = 0;
-
-
+	virtual void setLastPurchase(Date d){};
+	virtual Date getLastPurchase() const;
 
 };
 
@@ -48,18 +49,21 @@ class Passenger_comCartao:public Passenger{
 	string profession;
 	unsigned int annualVoos;
 	string id;
+	Date lastPurchase;
 
 
 public:
-	Passenger_comCartao(string name, string profession, Date birthday, unsigned int annualVoos);
+	Passenger_comCartao(string name, string profession, Date birthday, unsigned int annualVoos, Date lastPurchase);
 	~Passenger_comCartao();
 
 	string getProfession() const;
 	unsigned int getAnnualVoos() const;
 	string getID() const;
+	Date getLastPurchase() const;
 
 	void setProfession(string profession);
 	void setAnnualVoos(unsigned int annualVoos);
+	void setLastPurchase(Date d);
 
 	bool  isMember()const;
 

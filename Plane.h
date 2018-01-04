@@ -54,7 +54,18 @@ public:
 		time_t t = time(0);
 		struct tm * now = localtime( & t );
 		Date curr(now->tm_mday, now->tm_mon + 1, now->tm_year + 1900);
-		return (time_untilCheck(nextCheckUp, curr)) < (time_untilCheck(p.nextCheckUp, curr)); }
+		if (time_untilCheck(nextCheckUp, curr) < time_untilCheck(p.nextCheckUp, curr))
+				return true;
+		else if(time_untilCheck(nextCheckUp, curr) > time_untilCheck(p.nextCheckUp, curr))
+			return false;
+		else{
+			if (ID<p.ID)
+				return true;
+			else if(ID>p.ID)
+				return false;
+		}
+
+						; }
 	bool operator == (const Plane & p) const
 	{ time_t t = time(0);
 	struct tm * now = localtime( & t );

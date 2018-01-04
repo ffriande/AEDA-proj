@@ -150,7 +150,8 @@ void passengers()
 	cout<<"Add new Members(2)"<<endl;
 	cout<<"List all members(3)"<<endl;
 	cout<<"Eliminate Members(4)"<<endl;
-	cout<<"MENU(5)"<<endl;
+    cout<<"Change Member info(5)"<<endl;
+	cout<<"MENU(6)"<<endl;
 
 
 	int number;
@@ -176,9 +177,13 @@ void passengers()
 		passengers();
 		break;
 	case 5:
-
+        c.changedataPassenger();
 		menu();
-	}
+
+    case 6:
+
+        menu();
+}
 }
 
 void operators(){
@@ -252,11 +257,13 @@ int main()
 
 	setname();
 	c.loadPassengers();
+	c.insereHash();
 	c.loadPassengersCasual();
 	c.loadPlanes();
 	c.loadVoos();
 	c.loadReservations();
-	//c.loadReservationsALU();
+	c.loadReservationsALU();
+
 	menu();
 
 
