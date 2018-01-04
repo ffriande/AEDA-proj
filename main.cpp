@@ -57,10 +57,10 @@ void planeCheckup(){
 		c.set_newCheckUpTime(c.input_planeid(),c.input_date());
 		planeCheckup();
 		break;
-
 	case 6:
 		planes();
 		break;
+
 	}
 }
 
@@ -186,7 +186,28 @@ void passengers()
 }
 }
 
+void operators(){
+	cout<<"------Operators-------"<<endl;
+	cout<<"List All Operators(1)"<<endl;
+	cout<<"Add new Operator(2)"<<endl;
+	cout<<"MENU(5)"<<endl;
 
+	int number;
+	cin >> number;
+
+	switch (number) {
+		case 1:
+			c.list_operators();
+			operators();
+			break;
+		case 2:
+			c.add_new_operator();
+			operators();
+			break;
+		case 5:
+			menu();
+	}
+}
 void menu()
 {
 	cout << string(50, '\n');
@@ -198,6 +219,7 @@ void menu()
 	cout<<"Reservas(2)"<<endl;
 	cout<<"Planes(3)"<<endl;
 	cout<<"Leave menu(4)"<<endl;
+	cout<<"Operators(5)"<<endl;
 
 	int number;
 	cin>>number;
@@ -214,12 +236,16 @@ void menu()
 	case 3:
 		planes();
 		break;
+	case 5:
+		operators();
+		break;
 	case 4:
 		c.actualizarMemPasstxt();
 		c.actualizarCasPasstxt();
 		c.actualizarFlightstxt();
 		c.actualizarComResertxt();
 		exit(1);
+
 	}
 
 }
@@ -242,5 +268,3 @@ int main()
 
 
 }
-
-

@@ -12,9 +12,10 @@
 #include "Date.h"
 #include <vector>
 
+#include <algorithm>
+#include <queue>
+#include "Operator.h"
 using namespace std;
-
-class Company;
 
 class Passenger_inativo{
 	Passenger* passenger;
@@ -49,6 +50,8 @@ typedef unordered_set<Passenger_inativo,HashFunction,HashEq> passHash;
 typedef unordered_set<Passenger_inativo,HashFunction,HashEq>::iterator hashItr;
 
 
+typedef priority_queue<Operator> HEAP_OPERATOR;
+
 class Company {
 	Date currDate;
 	string nome;
@@ -58,6 +61,8 @@ class Company {
 	BST<Plane> planes;
 	bool lastminuteDesconto=false;
 	passHash inactive;
+
+    HEAP_OPERATOR operators;
 
 	public:
 	Company();
@@ -106,7 +111,6 @@ class Company {
 	void addReservation(Reservation reserv);
 
 	void doReservation();
-
 	double precoReserva(double precoOrig, bool socio, int mediavoos, float ocupPercent, bool menos_48h, Passenger* passID);
 	double precoReserva(double precoOrig, bool socio, float ocupPercent, bool menos_48h);
 	void lastminuteDiscount(bool t);
@@ -139,6 +143,32 @@ class Company {
 
 	///////////////////DATE///////////
 	Date getcurrDate();
+
+	//// OPERATORS///
+
+	//// operator menu ///
+
+    void list_operators();
+
+    void add_new_operator();
+
+    void edit_operator();
+
+    void removeOperator();
+  	void add_operator();
+
+  	Operator findOperator(string name );
+  	//todo menu editar
+  	//todo menu remover
+  	//todo load
+
+    Operator findOperator(Plane p);
+    bool checkModelMatch(string model, vector<string> models);
+
+    void add_plane_to_operator(Plane p );
+
+
+
 
 
 

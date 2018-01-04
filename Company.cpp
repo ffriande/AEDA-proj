@@ -14,7 +14,21 @@
 //
 //Plane *a= new Plane(0,"","",Date(0,0,0),10000);
 Company::Company():planes(Plane()){
+	Operator op = Operator("guedes",{"AirbusA310","AirbusA319"},false);
+	Operator op2 = Operator("guedes2",{"AirbusA310","AirbusA319"},false);
+	Operator op1 = Operator("Joao",{"AirbusA32","Teste"},true);
+	Operator op3 = Operator("TESte",{"BUS"},true);
 
+	operators.push(op);
+	operators.push(op3);
+  	operators.push(op2);
+
+	op1.increaseWorkingDays();
+	operators.push(op1);
+
+	HEAP_OPERATOR temp = operators;
+
+	temp.pop();
 }
 
 
@@ -976,6 +990,8 @@ void Company::loadPlanes()
 		Plane::globalID_p++;
 		Plane *a= new Plane(capacity,plane,location,d,nr_days);
 
+		//operator
+
 		addPlane(*a);
 	}
 
@@ -1033,6 +1049,8 @@ void Company::doCheckUp(Plane plane) {
 void Company::set_newCheckUpTime(Plane plane, Date d) {
 	planes.remove(plane);
 	plane.setnextCheckup(d);
+    //add_plane_to_operator(plane);
+
 	planes.insert(plane);
 
 }
@@ -1376,6 +1394,147 @@ BSTItrIn<Plane> it(planes);
 }
 return plane;
 }
+void Company::list_operators() {
+	HEAP_OPERATOR temp = operators;
+    unsigned size = temp.size();
+	for(unsigned i =0 ; i < size; i++){
+		Operator el = temp.top();
+		el.print_operator();
+        temp.pop();
+	}
+
+}
+string get_plane_model(){
+  string model;
+  cout << "Model of plane:" <<endl;
+  cin >> model;
+  return model;
+}
+
+
+void Company::add_new_operator() {
+  string name,plane_model;
+  vector <string> plane_models;
+
+  int cont = 1;
+  cout << "Name of Operator"<<endl;
+  cin >> name;
+  while(cont == 1){
+    plane_model = get_plane_model();
+    //validate plane model exists
+    plane_models.push_back(plane_model);
+    cout << "Add another model ? yes(1) No(0)"<< endl;
+    cin >> cont;
+  }
+  Operator novo = Operator(name,plane_models,true);
+
+
+  operators.push(novo);
+
+}
+void Company::edit_operator(){
+	string name,plane_model;
+	vector<string> plane_models;
+	int cont = 1;
+	cout << "Name of Operator to edit "<<endl;
+	cin >>name;
+
+	Operator op = findOperator(name);
+	plane_models = op.getModels();
+
+	while(cont == 1){
+		 plane_model = get_plane_model();
+		 //validate plane model exists
+		 plane_models.push_back(plane_model);
+		 cout << "Add another model ? yes(1) No(0)"<< endl;
+		 cin >> cont;
+	}
+	op.setModels(plane_models);
+	operators.push(op);
+}
+void Company::removeOperator(){
+	string name;
+	cout << "Name Of Operator to remove"<<endl;
+	cin>>name;
+
+	Operator op = findOperator(name);
+
+	// Add their planes to other person
+	unsigned i ;
+	//vector<Plane> temp = op.getPlanes();
+	//for(i = 0 ; i < temp.size();i++){
+	//	add_plane_to_operator(temp[i]);
+	//}
+
+
+}
+bool Company::checkModelMatch(string model, vector<string> models) {
+  for (unsigned i = 0; i < models.size(); ++i) {
+    if(models[i] == model){
+      return true;
+    }
+
+  }
+  return false;
+
+}
+
+Operator Company::findOperator(string name){
+	HEAP_OPERATOR temp ;
+	Operator found ;
+	while(!operators.empty()){
+		if(operators.top().getName() == name){
+			found = operators.top();
+		}
+		temp.push(operators.top());
+		operators.pop();
+	}
+	operators = temp;
+	return found;
+}
+
+Operator Company::findOperator(Plane p) {
+
+  string plane_model = p.getModel();
+  HEAP_OPERATOR temp = operators;
+  Operator found;
+  unsigned size = operators.size();
+
+  for (unsigned i = 0; i < size; ++i) {
+
+    Operator el = operators.top();
+    if(checkModelMatch(p.getModel(),el.getModels())){
+      found = el;
+      break;
+    }
+    //reset queue
+    temp.pop();
+  }
+  
+  return found;
+}
+void Company::add_plane_to_operator(Plane p) {
+
+  unsigned size = operators.size();
+  HEAP_OPERATOR temp;
+  Operator to_add_plane = findOperator(p);
+  Operator el;
+  for (unsigned i = 0;  i < size ; ++i) {
+    el = operators.top();
+    if(to_add_plane==el){
+      el.addPlaneToQueue(p);
+      el.increaseWorkingDays();
+      //update availabilty TODO
+
+    }
+    temp.push(el);
+    operators.pop();
+  }
+
+  operators=temp ;
+}
+
+
 
 
 

@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/AEDA.dir/Company.cpp.o CMakeFiles/AEDA.dir/Date.cpp.o CMakeFiles/AEDA.dir/main.cpp.o CMakeFiles/AEDA.dir/Operator.cpp.o CMakeFiles/AEDA.dir/Passenger.cpp.o CMakeFiles/AEDA.dir/Plane.cpp.o CMakeFiles/AEDA.dir/Reservation.cpp.o CMakeFiles/AEDA.dir/Voo.cpp.o  -o AEDA 
