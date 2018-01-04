@@ -14,6 +14,11 @@ string Passenger::getProfession()const {
 unsigned int Passenger::getAnnualVoos() const{
 	return 0;
 }
+
+Date Passenger::getLastPurchase() const{
+	return Date();
+}
+
 Passenger::Passenger(string name, Date birthday) {
 	this->name = name;
 	this->birthday = birthday;
@@ -63,13 +68,14 @@ void Passenger::setBirthday(Date birthday) {
 	{
 	}
 
-Passenger_comCartao::Passenger_comCartao(string name, string profession, Date birthday, unsigned int annualVoos):Passenger(name, birthday){
+Passenger_comCartao::Passenger_comCartao(string name, string profession, Date birthday, unsigned int annualVoos, Date last):Passenger(name, birthday){
 	this->annualVoos=annualVoos;
 	this->profession=profession;
 	stringstream ss;
 	ss << getIdCartao();
 	this->id= "MEM " + ss.str();
 	incrementIdCartao();
+	this->lastPurchase=last;
 }
 
 string Passenger_comCartao::getProfession() const {
@@ -98,6 +104,17 @@ bool Passenger_comCartao::isMember() const {
 string Passenger_comCartao::getID() const{
 	return id;
 }
+
+
+
+Date Passenger_comCartao::getLastPurchase() const{
+	return this->lastPurchase;
+}
+
+
+void Passenger_comCartao::setLastPurchase(Date d){
+	this->lastPurchase=d;
+}
 //PASSAGEIROS OCASIONAIS
 
 
@@ -119,3 +136,4 @@ bool Passenger_ocasional::isMember() const {
 string Passenger_ocasional::getID() const{
 	return id;
 }
+

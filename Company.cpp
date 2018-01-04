@@ -53,6 +53,9 @@ string Company::getName() const{
 	return this->nome;
 }
 
+passHash Company::getInactive() const{
+	return inactive;
+}
 
 void Company::actualizarMemPasstxt()
 {
@@ -210,12 +213,12 @@ string line;
 	while (getline(inficheiro,line))
 	{
 
-	string args[4];
+	string args[5];
 	int averageVoos;
 		stringstream linestream(line);
 		string value;
 		args->clear();
-		vector<unsigned int> birthday;
+		vector<unsigned int> birthday, purchase;
 		int i=0;
 
 		while(getline(linestream,value,';'))
@@ -231,7 +234,11 @@ string line;
 		birthday=decomposeStringData(args[2]);
 		Date d(birthday[0],birthday[1],birthday[2]);
 
-		Passenger *p= new Passenger_comCartao(args[0],args[1],d,averageVoos);
+		purchase=decomposeStringData(args[4]);
+		Date pu(purchase[0],purchase[1],purchase[2]);
+
+		Passenger *p= new Passenger_comCartao(args[0],args[1],d,averageVoos,pu);
+
 
 		addPassenger(p);
 	}
@@ -325,7 +332,7 @@ void Company::creatPassenger() {
 	Date d(birthday[0], birthday[1], birthday[2]);
 
 
-	Passenger *xPassenger= new Passenger_comCartao(nome,profissao, d, 0);
+	Passenger *xPassenger= new Passenger_comCartao(nome,profissao, d, 0,Date());
 
 	addPassenger(xPassenger);
 
@@ -348,7 +355,7 @@ void Company::seeallMembers()
 
 	cout << "\n---------Company's Associates-----------\n";
 
-	cout << "\nID\tName\t\tProfession\t\tBirthday\t\tAnnual flights\n" << endl;
+	cout << "\nID\tName\t\tProfession\t\tBirthday\t\tAnnual flights\t\tLatest Purchase\n" << endl;
 	for (size_t i = 0; i < passengers.size(); i++) {
 	if (passengers[i]->isMember() == 1) {
 			cout << passengers[i]->getID()
@@ -357,10 +364,16 @@ void Company::seeallMembers()
 					<< passengers[i]->getBirthday().getDay() << "/"
 					<< passengers[i]->getBirthday().getMonth() << "/"
 					<< passengers[i]->getBirthday().getYear() << "\t\t"
-					<< passengers[i]->getAnnualVoos() << endl;
+					<< passengers[i]->getAnnualVoos()<<"\t\t"
+					<< passengers[i]->getLastPurchase().getDay() << "/"
+					<< passengers[i]->getLastPurchase().getMonth() << "/"
+					<< passengers[i]->getLastPurchase().getYear() <<  endl;
 
 		}
 	}
+	cout << "------------Inactive members--------------\n";
+	printHash();
+
 }
 
 //ver isto
@@ -369,14 +382,97 @@ void Company::elimPassenger()
 	cout<<"\n--------------REMOVE MEMBER---------------\n"<<endl;
 	cout<<"Member's ID:  "<<endl;
 	string name;
+	Passenger *p;
 
 	cin.ignore();
 	getline(cin,name);
 	int k=searchPassengersID(name);
 	passengers.erase(passengers.begin()+k);
+	if (k == -1) {
+		p = searchPassengerInactivo(name);
+		inactive.erase(inactive.find(Passenger_inativo(p)));
+	}
 	cout<<"\nMember "<<name<< " successfully removed\n";
 
 }
+
+
+
+
+void Company::changedataPassenger() {
+	int option=0;
+	cout << "\n--------------Change Associate's Info---------------\n" << endl;
+	cout << "Member's ID:  " << endl;
+	string name;
+	Passenger *p;
+	cin.ignore();
+	getline(cin, name);
+	cin.ignore();
+	int k = searchPassengersID(name);
+	if (k == -1) {
+		p = searchPassengerInactivo(name);
+		inactive.erase(inactive.find(Passenger_inativo(p)));
+	}
+	while (option != 4) {
+		cin.clear();
+        string newname;
+        string prof;
+        string bday;
+        vector<unsigned int> birthday;
+        Date d;
+        cout << "Edit:\n(1) Name \n(2) Profession \n(3) Birthday \n(4) Exit" << endl;
+		cout << "Indique o nome do cliente:" << endl;
+		cin >> option;
+		switch (option) {
+			case 1:
+
+				cout << "\nold name-->";
+				if (k != -1)
+					cout << passengers[k]->getName();
+				else cout << p->getName();
+				cout << "\nNew name:  ";
+				cin.ignore();
+				getline(cin, newname);
+				if (k != -1)
+					passengers[k]->setName(newname);
+				else  p->setName(newname);
+				break;
+			case 2:
+				cout << "\nold profession-->";
+				if (k != -1)
+					cout << passengers[k]->getProfession();
+				else cout << p->getProfession();
+				cout << "\nNew profession:  ";
+				cin.ignore();
+				getline(cin, prof);
+				if (k != -1)
+					passengers[k]->setProfession(prof);
+				else  p->setProfession(prof);
+				break;
+
+			case 3:
+
+				cout << "\nold bday-->";
+				if (k != -1)
+					cout << passengers[k]->getBirthday().getDay()<<"/"<<passengers[k]->getBirthday().getMonth()<<"/"<<passengers[k]->getBirthday().getYear();
+				else cout << p->getBirthday().getDay()<<"/"<<p->getBirthday().getMonth()<<"/"<<p->getBirthday().getYear();
+				cout << "\nNew bday(dd/mm/yyyy):  ";
+				cin >> bday;
+				birthday = decomposeStringData(bday);
+				d=Date(birthday[0], birthday[1], birthday[2]);
+				if (k != -1)
+					passengers[k]->setBirthday(d);
+				else  p->setBirthday(d);
+				break;
+
+            default:
+                break;
+		}
+	}
+
+}
+
+
 
 /////////////////////////////////////RESERVAS///////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
@@ -483,16 +579,26 @@ void Company::loadReservations()
 		p=searchPassengersID(passID);
 		orig = voos[v]->getPartida();
 		dest = voos[v]->getDestino();
-		if (passengers[p]->isMember()) {
-					passengers[p]->setAnnualVoos(passengers[p]->getAnnualVoos() + 1);
+
+		if(p!=-1){
+			if (passengers[p]->isMember()) {
 					voos[v]->adicionarPassenger(passengers[p]);
 					Reservation r(preco,vooID,orig,dest,passengers[p]);
 					addReservation(r);
 				}
+
 		else {
 			Reservation r(preco,vooID,orig,dest,passengers[p]);
 			addReservation(r);
 		}
+		}
+		else{
+			Passenger *x =searchPassengerInactivo(passID);
+			voos[v]->adicionarPassenger(x);
+			Reservation r(preco,vooID,orig,dest,x);
+			addReservation(r);
+		}
+
 	}
 
 	inficheiro.clear();
@@ -500,19 +606,6 @@ void Company::loadReservations()
 	}
 
 
-void Company::seeallReservations()
-{
-
-	cout<< "\n---------All Reservations-----------\n";
-
-	for (size_t i=0; i<reservations.size(); i++)
-	{
-
-		//cout<<"\nID\t\tNome\t\tData de inscricao\t\tMontante"<<endl;
-		//cout<<reservations[i]->getRsvID()<<"\t"<<reservations[i]->getInitialPrice()<<"\t"<< reservations[i]->getPurchasePrice() <<"\t"<< reservations[i]->getDestination()<<"\t"<<reservations[i]->getOrigin()<<endl<<"\t"<<reservations[i]->getPassID()<<endl;
-
-	}
-}
 
 
 void Company::doReservation()
@@ -526,6 +619,7 @@ void Company::doReservation()
 	int jPass;
 	char yn;
 	double preco;
+	Passenger *p;
 
 	cout << "-------Do Reservation-------" << endl;
 	cout
@@ -565,8 +659,15 @@ void Company::doReservation()
 	//cin.ignore();
 
 
-	if (idPass!="-1")             //se for membro
+	if (idPass!="-1")            //se for membro
 		jPass=	searchPassengersID (idPass);
+		if (jPass==-1){
+			p=searchPassengerInactivo(idPass);
+			passengers.push_back(p);
+			inactive.erase(inactive.find(Passenger_inativo(p)));
+			jPass=searchPassengersID (p->getID());        //retira da hash e volta a por no vector
+		}
+
 
 	cin.clear();
 			cout << "\n\nHello  "<<passengers[jPass]->getName()<<endl;
@@ -591,6 +692,7 @@ void Company::doReservation()
 			addReservation(r);
 			voos[voo]->adicionarPassenger(passengers[jPass]);
 			passengers[jPass]->setAnnualVoos(passengers[jPass]->getAnnualVoos()+1);
+			passengers[jPass]->setLastPurchase(getcurrDate());
 			cout << "\nSuccess!!!";
 			cout << "\nSuccess!!!";
 			cout << "\nSuccess!!!\n";
@@ -630,7 +732,10 @@ void Company::doReservation()
 			cout << "\nSuccess!!!";
 			cout << "\nSuccess!!!\n";
 		}
-		else return;
+		else{
+			inactive.insert(passengers[jPass]);
+			passengers.erase(passengers.begin()+jPass);
+			return;}
 
 	}
 }
@@ -652,6 +757,7 @@ void Company::reservationPlane() {
 	int preco1;
 	vector <unsigned int> departureDate;
 	char yn;
+	Passenger *p;
 
 	cout << "-------Book an entire flight's seats-------" << endl;
 	/*cout << "id\tprice\torigin\tdestination\tdate(dd/MM/YYYY/hh/mm)" << endl;
@@ -708,6 +814,14 @@ void Company::reservationPlane() {
 		getline(cin,idPass);
 
 	}
+	else if (idPass!="-1")            //se for membro
+		passnr=	searchPassengersIDmem (idPass);
+			if (passnr==-1){
+				p=searchPassengerInactivo(idPass);
+				passengers.push_back(p);
+				inactive.erase(inactive.find(Passenger_inativo(p)));
+			        //retira da hash e volta a por no vector
+			}
 	passnr=searchPassengersIDmem(idPass);
 
 	//cin.ignore();
@@ -746,17 +860,26 @@ void Company::reservationPlane() {
 		Reservation reser(precototal, v->getId_voo(), v->getPartida(),
 				v->getDestino(), passengers[passnr]);
 		v->adicionarPassenger(passengers[passnr]);
+		passengers[passnr]->setAnnualVoos(passengers[passnr]->getAnnualVoos()+1);
+		passengers[passnr]->setLastPurchase(getcurrDate());
 		addReservation(reser);
+		passengers[passnr]->setLastPurchase(getcurrDate());
+
 
 		cout << "\nSuccess!!!";
 		cout << "\nSuccess!!!";
 		cout << "\nSuccess!!!\n";
 		cin.ignore();
 	}
-	else return;
+	else {
+		inactive.insert(passengers[passnr]);
+		passengers.erase(passengers.begin()+passnr);
+		return;}
+	}
 
 
-}
+
+
 
 
 	void Company::lastminuteDiscount(bool t){
@@ -1120,7 +1243,7 @@ void Company::loadVoos()
 
 void Company::seeAllVoos() {
 	cout
-			<< "id\tprice\torigin\tdestination\tdate(dd/MM/YYYY/hh/mm)\tPlane Model\tOccupation"
+			<< "id\tprice\torigin\tdestination\tdate(dd/MM/YYYY/hh/mm)\tOccupation"
 			<< endl;
 	for (size_t i = 0; i < voos.size(); i++) {
 
@@ -1131,8 +1254,7 @@ void Company::seeAllVoos() {
 				<< voos[i]->getDate().getMonth() << "/"
 				<< voos[i]->getDate().getYear() << "/"
 				<< voos[i]->getDate().getHour() << "/"
-				<< voos[i]->getDate().getMinutes() << "  \t"
-				<< voos[i]->getPlane()->getModel() <<"  \t"
+				<< voos[i]->getDate().getMinutes() << " \t"
 				<< voos[i]->getLugares_ocupados()<<
 				endl;
 	}
@@ -1155,22 +1277,23 @@ Date Company::getcurrDate() {
 	return currDate;
 }
 
-bool Company::lessthan48(Date a,Date b){
-	Date c=a-b;
+bool Company::lessthan48(Date a, Date b) {
+	Date c = a - b;
 
-	if((c.getDay()<2 && c.getMonth()==0 && c.getYear()==0)
-			|| (c.getDay()==2 && c.getHour()>24 && c.getMinutes() >60)
-			|| (c.getDay()==2 && c.getHour()==0 && c.getMinutes() >60)
-			|| (c.getDay()==2 && c.getHour()>24 && c.getMinutes() ==0))
+	if ((c.getDay() < 2 && c.getMonth() == 0 && c.getYear() == 0)
+			|| (c.getDay() == 2 && c.getHour() > 24 && c.getMinutes() > 60)
+			|| (c.getDay() == 2 && c.getHour() == 0 && c.getMinutes() > 60)
+			|| (c.getDay() == 2 && c.getHour() > 24 && c.getMinutes() == 0))
 		return true;
-	else return false;
+	else
+		return false;
 }
-	void Company::updatecurrDate()
-	{
-			time_t t = time(0);
-			 struct tm * now = localtime( & t );
-			 currDate= Date(now->tm_mday, now->tm_mon + 1, now->tm_year + 1900,now->tm_hour,now->tm_min );
-		}
+void Company::updatecurrDate() {
+	time_t t = time(0);
+	struct tm * now = localtime(&t);
+	currDate = Date(now->tm_mday, now->tm_mon + 1, now->tm_year + 1900,
+			now->tm_hour, now->tm_min);
+}
 
 
 
@@ -1183,16 +1306,20 @@ int Company::searchVoostr(string idVoo){
 		}
 	return voo;
 }
+
+//retorna posicao de pass, else ret -1
 int Company::searchPassengersID(string passID){
-	int p;
+	int p=-1;
 	for (size_t j = 0; j < passengers.size(); j++)
 			if (passengers[j]->getID() == passID)
 				p = j;
 
 	return p;
 }
+
+//retorna posicao de pass, else ret -1
 int Company::searchPassengersIDmem(string idPass){
-int passnr;
+int passnr=-1;
 for (size_t i = 0; i < passengers.size(); i++) {
 		if (idPass == passengers[i]->getID() && passengers[i]->isMember())
 			passnr = i;
@@ -1203,7 +1330,7 @@ return passnr;
 
 //Plane plane_naoEncontrad(0,"","",Date(0,0,0),10000);
 
-Plane Company::searchPlaneID(unsigned int p){
+Plane Company::searchPlaneID(unsigned int p){  ///11,16,19
 	vector<unsigned int>plane_info_int;
 	vector<string>plane_info_str;
 	Date temp;
@@ -1253,8 +1380,63 @@ return plane;
 
 
 
+////HASH
+void Company::printHash() {
+	hashItr it = inactive.begin();
 
 
+	while (it != inactive.end()) {
+
+		cout << it->getPassenger()->getID() << "\t"
+				<< it->getPassenger()->getName() << "\t" << "\t"
+				<< it->getPassenger()->getProfession() << "\t\t"
+				<< it->getPassenger()->getBirthday().getDay() << "/"
+				<< it->getPassenger()->getBirthday().getMonth() << "/"
+				<< it->getPassenger()->getBirthday().getYear() << "\t\t"
+				<< it->getPassenger()->getAnnualVoos() << "\t\t"
+				<< it->getPassenger()->getLastPurchase().getDay() << "/"
+				<< it->getPassenger()->getLastPurchase().getMonth() << "/"
+				<< it->getPassenger()->getLastPurchase().getYear() <<  endl;
+
+
+
+		it++;
+	}
+
+
+}
+
+
+
+
+
+void Company::insereHash(){
+	for (size_t i = 0; i < passengers.size(); i++) {
+			if (passengers[i]->isMember())
+				if(time_untilCheck(getcurrDate(),passengers[i]->getLastPurchase())>365){
+					inactive.insert(Passenger_inativo(passengers[i]));
+					passengers.erase(passengers.begin()+i);
+				}
+		}
+
+}
+
+
+Passenger* Company::searchPassengerInactivo(string id) {
+	hashItr it = inactive.begin();
+
+
+		while (it != inactive.end()) {
+			if(it->getPassenger()->getID() == id)
+				return it->getPassenger();
+			it++;
+		}
+	;
+}
+
+Passenger_inativo::Passenger_inativo(Passenger* p){
+	this->passenger=p;
+}
 
 
 

@@ -6,12 +6,47 @@
 #include "Plane.h"
 #include "Passenger.h"
 #include "BST.h"
+#include <unordered_set>
 
 #include "Voo.h"
 #include "Date.h"
 #include <vector>
 
 using namespace std;
+
+class Company;
+
+class Passenger_inativo{
+	Passenger* passenger;
+public:
+	Passenger_inativo(){passenger=NULL;};
+	Passenger_inativo(Passenger* p);
+	Passenger* getPassenger() const{return passenger;};
+
+};
+
+struct HashFunction{
+	int operator() (const Passenger_inativo &p) const{
+		int key=1;
+		string id=p.getPassenger()->getID();
+		for ( unsigned int i=0; i< id.size(); i++ )
+			key = key + id[i];
+		return key;
+	}
+};
+struct HashEq {
+	bool operator()(const Passenger_inativo &p1, const Passenger_inativo &p2) const {
+	if((p1.getPassenger()->getID()==p2.getPassenger()->getID())&&
+			(p1.getPassenger()->getName()==p2.getPassenger()->getName()))
+			return true;
+
+	else return false;
+	}
+	};
+
+
+typedef unordered_set<Passenger_inativo,HashFunction,HashEq> passHash;
+typedef unordered_set<Passenger_inativo,HashFunction,HashEq>::iterator hashItr;
 
 
 class Company {
@@ -22,7 +57,7 @@ class Company {
 	vector<Reservation> reservations;
 	BST<Plane> planes;
 	bool lastminuteDesconto=false;
-	//unsigned int globalID_p;
+	passHash inactive;
 
 	public:
 	Company();
@@ -42,12 +77,15 @@ class Company {
 	vector<Voo*> getVoos() const;
 	vector<Reservation> getReservations() const;						///vector de reservas
 	BST<Plane> getPlanes() const;
+	passHash getInactive() const;
+
 
 	int searchPassengersIDmem(string pass);
 	int searchPassengersID(string pass);
 	int searchVoostr(string vooid);
 	Plane searchPlaneID(unsigned int planeid);
 	Plane searchPlane_origin(string origin);
+	Passenger* searchPassengerInactivo(string id) ;
 
 
 	////////////////passengers////////////////
@@ -58,7 +96,7 @@ class Company {
 	void creatPassenger();								///cria um Passenger
 	void seeallMembers();								///ver todos os socios da Company
 	void elimPassenger();							///elimina um Passenger da lista de passengers
-	void changedataPassenger();							///muda dados de um Passenger, podendo este tornar se um socio ou mesmo deixar de o ser
+	void changedataPassenger();
 
 
 
@@ -66,7 +104,6 @@ class Company {
 	void loadReservations();	
 	void loadReservationsALU();
 	void addReservation(Reservation reserv);
-	void seeallReservations();
 
 	void doReservation();
 
@@ -75,7 +112,6 @@ class Company {
 	void lastminuteDiscount(bool t);
 
 	//////////////////PLANES//////////////////////
-	void print_availablePlanes();
 	void loadPlanes();								///l� avioes do ficheiro
 	void addPlane(Plane plane);							///adiciona Plane
 	void seeAllPlanes();
@@ -96,7 +132,6 @@ class Company {
 
 	void loadVoos();
 	void seeAllVoos();
-	void allVoos();
 	void addVoo(Voo* voo);
 	void createVoo();
 	void reservationPlane();
@@ -111,6 +146,9 @@ class Company {
 
 	bool lessthan48(Date a,Date b); //a is the time of the flight and b is the current time
 
-
+	//////////////INACTIVOS/////////////////
+	void printHash();
+	void insereHash();
 };
+
 #endif
